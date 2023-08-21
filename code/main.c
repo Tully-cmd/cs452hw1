@@ -21,13 +21,24 @@ int main() {
  
   printf("\nHead: %s\n",(char *)deq_head_get(q));
   printf("\nTail: %s\n\n",(char *)deq_tail_get(q));
-  //printf("deq_head_ith[0]: %s\n",(char *)deq_head_ith(q,0));
-  
-  for(int i = 0; i < deq_len(q); q = q + 1) {
+ 
+  //printf("deq_len(q): %d\n",deq_len(q));
+
+  for(int i = 0; i < deq_len(q); i = i + 1) {
     printf("deq_head_ith[%d]: %s\n\n",i,(char *)deq_head_ith(q,i));
-    printf("deq_tail_ith[%d]: %s\n\n",i,(char *)deq_head_ith(q,i));
   }
 
-  deq_del(q,0);
+  for(int i = 0; i < deq_len(q); i = i + 1) {
+    printf("deq_tail_ith[%d]: %s\n\n",i,(char *)deq_tail_ith(q,i));
+  }
+
+  printf("deq_head_rem: %s\n\n",(char *)deq_head_rem(q,"aticReprep(Deqq){return(Rep)q;}staticvoidput(Re,Ende,Datad){if(e==Head){if(r->len==0){structNode*new=malloc(sizeof(structNode));new->np[Head]0;new->np[Tail]=0;new->data=d;r->len=r->len+r->ht[Head]=new}else{structNode*new=malloc(sizeof(structNode))new->np[Tail]=r->ht[Head]new->np[Head]new->data=r->len=r->len+1;r->ht[Head]->np[Head]=new;r->ht[Head]=new}}\0"));
+
+  //s=(char *) deq_str(q,0);
+  //printf("%s\n",s);
+
+  //char *s2=deq_str(q,0);
+  //printf("deq_del: %s\n",s2); 
+  //deq_del(q,0);
   return 0;
 }

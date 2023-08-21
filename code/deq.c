@@ -90,7 +90,7 @@ static Data ith(Rep r, End e, int i)  {
       curInd = curInd + 1;
     }
   }
-
+  printf("oh no\n");
   return 0; 
 }
 
@@ -104,7 +104,44 @@ static Data get(Rep r, End e) {
   return 0;
 }
 
-static Data rem(Rep r, End e, Data d) { return 0; }
+static Data rem(Rep r, End e, Data d) { 
+  Data ret;	
+  if(e == Head) { 
+    for(Node cur = r->ht[Head]; cur; cur = cur->np[Tail]) {
+      if(cur->data == d) {
+	ret = cur->data;
+        if(cur->np[Head] != 0) {
+	  cur->np[Head]->np[Tail] = 0;
+	  cur->np[Head] = 0;
+	}
+	if(cur->np[Tail] != 0) {
+	  cur->np[Tail]->np[Head] = 0;
+	  cur->np[Tail] = 0;
+	}
+        free(cur);
+	return ret;
+      }
+    }
+  }
+  if(e == Tail) { 
+    for(Node cur = r->ht[Tail]; cur; cur = cur->np[Head]) {
+      if(cur->data == d) {
+	ret = cur->data;
+        if(cur->np[Head] != 0) {
+	  cur->np[Head]->np[Tail] = 0;
+	  cur->np[Head] = 0;
+	}
+	if(cur->np[Tail] != 0) {
+	  cur->np[Tail]->np[Head] = 0;
+	  cur->np[Tail] = 0;
+	}
+        free(cur);
+	return ret;
+      }
+    }
+  }
+  return 0; 
+}
 
 extern Deq deq_new() {
   Rep r=(Rep)malloc(sizeof(*r));
