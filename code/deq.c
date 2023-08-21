@@ -1,3 +1,6 @@
+#define __STDC_WANT_LIB_EXT2__ 1 
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,9 +26,84 @@ static Rep rep(Deq q) {
   return (Rep)q;
 }
 
-static void put(Rep r, End e, Data d) {}
-static Data ith(Rep r, End e, int i)  { return 0; }
-static Data get(Rep r, End e)         { return 0; }
+static void put(Rep r, End e, Data d) {
+  if(e == Head) {
+    if(r->len == 0) {
+      struct Node * new = malloc(sizeof(struct Node));
+      new->np[Head] = 0;
+      new->np[Tail] = 0;
+      new->data = d;
+      r->len = r->len + 1;
+      r->ht[Head] = new;
+      r->ht[Tail] = new;
+    } else { 
+      struct Node * new = malloc(sizeof(struct Node));
+      new->np[Tail] = r->ht[Head];
+      new->np[Head] = 0;
+      new->data = d;
+      r->len = r->len + 1;
+      r->ht[Head]->np[Head] = new;
+      r->ht[Head] = new;
+    }
+  }
+  if(e == Tail) {
+    if(r->len == 0) {
+      struct Node * new = malloc(sizeof(struct Node));
+      new->np[Tail] = 0;
+      new->np[Head] = 0;
+      new->data = d;
+      r->len = r->len + 1;
+      r->ht[Head] = new;
+      r->ht[Tail] = new;
+    } else {
+      struct Node * new = malloc(sizeof(struct Node));
+      new->np[Tail] = 0;
+      new->np[Head] = r->ht[Tail];
+      new->data = d;
+      r->len = r->len + 1;
+      r->ht[Tail]->np[Tail] = new;
+      r->ht[Tail] = new;
+    } 
+  }
+}
+
+static Data ith(Rep r, End e, int i)  { 
+  if(i < 0 || i >= r->len) {
+    return 0;
+  }
+
+  int curInd = 0;
+
+  if(e == Head) {
+    for(Node cur = r->ht[Head]; cur; cur = cur->np[Tail]) {
+      if(curInd == i) {
+        return cur->data;
+      }
+      curInd = curInd + 1;
+    }
+  }
+  if(e == Tail) {
+    for(Node cur = r->ht[Tail]; cur; cur = cur->np[Head]) {
+      if(curInd == i) {
+        return cur->data;
+      }
+      curInd = curInd + 1;
+    }
+  }
+
+  return 0; 
+}
+
+static Data get(Rep r, End e) {
+  if(e == Head) {
+    return r->ht[Head]->data;
+  }
+  if(e == Tail) {
+    return r->ht[Tail]->data;
+  }
+  return 0;
+}
+
 static Data rem(Rep r, End e, Data d) { return 0; }
 
 extern Deq deq_new() {
