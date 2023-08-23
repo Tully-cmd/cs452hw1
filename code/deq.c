@@ -29,7 +29,7 @@ static Rep rep(Deq q) {
 static void put(Rep r, End e, Data d) {
   if(e == Head) {
     if(r->len == 0) {
-      struct Node * new = malloc(sizeof(struct Node));
+      struct Node * new = malloc(sizeof(struct Node) + sizeof(d));
       new->np[Head] = 0;
       new->np[Tail] = 0;
       new->data = d;
@@ -37,7 +37,7 @@ static void put(Rep r, End e, Data d) {
       r->ht[Head] = new;
       r->ht[Tail] = new;
     } else { 
-      struct Node * new = malloc(sizeof(struct Node));
+      struct Node * new = malloc(sizeof(struct Node) + sizeof(d));
       new->np[Tail] = r->ht[Head];
       new->np[Head] = 0;
       new->data = d;
@@ -48,7 +48,7 @@ static void put(Rep r, End e, Data d) {
   }
   if(e == Tail) {
     if(r->len == 0) {
-      struct Node * new = malloc(sizeof(struct Node));
+      struct Node * new = malloc(sizeof(struct Node) + sizeof(d));
       new->np[Tail] = 0;
       new->np[Head] = 0;
       new->data = d;
@@ -56,7 +56,7 @@ static void put(Rep r, End e, Data d) {
       r->ht[Head] = new;
       r->ht[Tail] = new;
     } else {
-      struct Node * new = malloc(sizeof(struct Node));
+      struct Node * new = malloc(sizeof(struct Node) + sizeof(d));
       new->np[Tail] = 0;
       new->np[Head] = r->ht[Tail];
       new->data = d;
@@ -114,11 +114,20 @@ static Data rem(Rep r, End e, Data d) {
 	  cur->np[Head]->np[Tail] = 0;
 	  cur->np[Head] = 0;
 	}
+	if(cur->np[Head] == 0) {
+	  //else remove is head
+	  r->ht[Head]  = cur->np[Tail];
+	}
 	if(cur->np[Tail] != 0) {
 	  cur->np[Tail]->np[Head] = 0;
 	  cur->np[Tail] = 0;
 	}
-        free(cur);
+	if(cur->np[Tail] == 0) {
+	  //else remove is tail
+	  r->ht[Tail] = cur->np[Head];
+	}
+	
+        //free(cur);
 	return ret;
       }
     }
@@ -135,7 +144,7 @@ static Data rem(Rep r, End e, Data d) {
 	  cur->np[Tail]->np[Head] = 0;
 	  cur->np[Tail] = 0;
 	}
-        free(cur);
+        //free(cur);
 	return ret;
       }
     }
