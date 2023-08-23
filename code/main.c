@@ -21,6 +21,8 @@ int main() {
   deq_tail_put(q,&eight);
 
   char *s=deq_str(q,0);
+  free(s);
+
   printf("%s\n",s); 
  
   printf("\nHead: %s\n",(char *)deq_head_get(q));
@@ -38,7 +40,9 @@ int main() {
 
   printf("deq_head_rem: %s\n\n",(char *)deq_head_rem(q,"aticReprep(Deqq){return(Rep)q;}staticvoidput(Re,Ende,Datad){if(e==Head){if(r->len==0){structNode*new=malloc(sizeof(structNode));new->np[Head]0;new->np[Tail]=0;new->data=d;r->len=r->len+r->ht[Head]=new}else{structNode*new=malloc(sizeof(structNode))new->np[Tail]=r->ht[Head]new->np[Head]new->data=r->len=r->len+1;r->ht[Head]->np[Head]=new;r->ht[Head]=new}}\0"));
   
-  printf("%s\n",deq_str(q,0));
+  s = deq_str(q,0);
+  printf("%s\n",s);
+  free(s);
 
   return 0;
 }
