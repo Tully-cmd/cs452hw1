@@ -3,6 +3,11 @@
 #try: main.o libdeq.so
 #	gcc -o $@ $< -L. -ldeq -Wl,-rpath=.
 
+val: deq
+	printf "\n\n"
+	valgrind --leak-check=full --leak-resolution=high ./prg
+	printf "\n\n"
+
 deq: main.o deq.o
 	gcc -o prg main.o deq.o -L libdeq.so
 
