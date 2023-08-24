@@ -19,8 +19,8 @@ int main() {
   deq_head_put(q,(void*) "aticReprep(Deqq){return(Rep)q;}staticvoidput(Re,Ende,Datad){if(e==Head){if(r->len==0){structNode*new=malloc(sizeof(structNode));new->np[Head]0;new->np[Tail]=0;new->data=d;r->len=r->len+r\0");
   deq_tail_put(q,(void*) "777777\0");
 
-  char * eight = "c";
-  deq_tail_put(q,(void *) eight);
+  // char eight = 'c';
+  // deq_tail_put(q,(void *) &eight);
 
   char *s=deq_str(q,0);
   free(s);

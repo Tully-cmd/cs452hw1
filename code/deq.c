@@ -93,6 +93,8 @@ static Data ith(Rep r, End e, int i)  {
 }
 
 static Data get(Rep r, End e) {
+  //TODO check if list is empty or not
+  //TODO remove
   if(e == Head) {
     return r->ht[Head]->data;
   }
@@ -110,14 +112,14 @@ static Data rem(Rep r, End e, Data d) {
       if(cur->data == d) {
 	ret = cur->data;
         if(cur->np[Head] != 0) { //Neighbor before is present
-	  cur->np[Head]->np[Tail] = 0; //look on the other side?
+	  cur->np[Head]->np[Tail] = 0; //TODO look on the other side?
 	  cur->np[Head] = 0; //remove link
 	}
 	if(cur->np[Head] == 0) { //removing the head
 	  r->ht[Head]  = cur->np[Tail];
 	}
 	if(cur->np[Tail] != 0) { //Neighbor after is present
-	  cur->np[Tail]->np[Head] = 0; //look on the other side?
+	  cur->np[Tail]->np[Head] = 0; //TODO look on the other side?
 	  cur->np[Tail] = 0; //remove link
 	}
 	if(cur->np[Tail] == 0) { //removing the tail
@@ -132,6 +134,7 @@ static Data rem(Rep r, End e, Data d) {
   if(e == Tail) { 
     for(Node cur = r->ht[Tail]; cur; cur = cur->np[Head]) {
       if(cur->data == d) {
+	//TODO
 	ret = cur->data;
         if(cur->np[Head] != 0) {
 	  cur->np[Head]->np[Tail] = 0;
