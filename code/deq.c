@@ -26,10 +26,16 @@ static Rep rep(Deq q) {
   return (Rep)q;
 }
 
-static void put(Rep r, End e, Data d) {
+static void put(Rep r, End e, Data d) { 
+  //Node new = (Node) malloc(sizeof(*new));
+  Node new = malloc(sizeof(struct Node));
+  printf("sizeof(struct Node): %ld\n",sizeof(struct Node));
+  printf("sizeof(data): %ld\n",sizeof(d));
+  printf("new: %p\n",new);
+  printf("sizeof(new): %ld\n",sizeof(new));
+  printf("end: %d\n\n\n",e);
   if(e == Head) {
     if(r->len == 0) {
-      struct Node * new = malloc(sizeof(struct Node) + sizeof(d));
       new->np[Head] = 0;
       new->np[Tail] = 0;
       new->data = d;
@@ -37,7 +43,6 @@ static void put(Rep r, End e, Data d) {
       r->ht[Head] = new;
       r->ht[Tail] = new;
     } else { 
-      struct Node * new = malloc(sizeof(struct Node) + sizeof(d));
       new->np[Tail] = r->ht[Head];
       new->np[Head] = 0;
       new->data = d;
@@ -48,7 +53,6 @@ static void put(Rep r, End e, Data d) {
   }
   if(e == Tail) {
     if(r->len == 0) {
-      struct Node * new = malloc(sizeof(struct Node) + sizeof(d));
       new->np[Tail] = 0;
       new->np[Head] = 0;
       new->data = d;
@@ -56,7 +60,6 @@ static void put(Rep r, End e, Data d) {
       r->ht[Head] = new;
       r->ht[Tail] = new;
     } else {
-      struct Node * new = malloc(sizeof(struct Node) + sizeof(d));
       new->np[Tail] = 0;
       new->np[Head] = r->ht[Tail];
       new->data = d;
@@ -127,7 +130,7 @@ static Data rem(Rep r, End e, Data d) {
 	  r->ht[Tail] = cur->np[Head];
 	}
 	
-        //free(cur);
+        free(cur);
 	return ret;
       }
     }
