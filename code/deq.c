@@ -59,8 +59,9 @@ static void put(Rep r, End e, Data d) { //Param: Rep (Deq) End (Head/Tail) Data
     r->len = r->len + 1;
     r->ht[Tail]->np[Tail] = new; //Set current Tail next to new Tail
     r->ht[Tail] = new; //New Tail is now the Tail
+    return;
   }
-  printf("Error: Bad argument put(End e)\n");
+  ERROR("Bad argument put(End e)\n");
 }
 
 static Data ith(Rep r, End e, int i)  { 
