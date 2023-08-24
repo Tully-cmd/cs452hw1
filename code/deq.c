@@ -1,5 +1,5 @@
-#define __STDC_WANT_LIB_EXT2__ 1 
-#define _GNU_SOURCE
+#define __STDC_WANT_LIB_EXT2__ 1 //`Needed for asprintf on my machine
+#define _GNU_SOURCE //Needed for asprintf on my machine 
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,70 +8,64 @@
 #include "deq.h"
 #include "error.h"
 
-// indices and size of array of node pointers
-typedef enum {Head,Tail,Ends} End;
+//Indices and size of array of node pointers
+typedef enum {Head,Tail,Ends} End;	//Head = 0, Tail = 1. Ends unused
 
+//Node type implementation. Array of Node pointers of neighbors and data ptr.
 typedef struct Node {
   struct Node *np[Ends];		// next/prev neighbors
-  Data data;
-} *Node;
-
+  Data data; 				// data (pass data pointer)
+} *Node; 				// Node is a pointer to Node Structure
+					
+//Deq type implementation. Array of Nodes of head and tail of Deq and int len. 
 typedef struct {
   Node ht[Ends];			// head/tail nodes
-  int len;
-} *Rep;
-
-static Rep rep(Deq q) {
-  if (!q) ERROR("zero pointer");
-  return (Rep)q;
+  int len;				// int length of Deq
+} *Rep; 				// Rep is a pointer to Deq Structure
+					
+//Check if pointer to Deq (doubly linked list) is valid and cast to Rep
+static Rep rep(Deq q) { 		//Return: Rep (prt->Deq). Param: Deq q
+  if (!q) ERROR("zero pointer");        //Throw error on NULL pointer
+  return (Rep)q;	                 
 }
 
-static void put(Rep r, End e, Data d) { 
-  //Node new = (Node) malloc(sizeof(*new));
-  Node new = malloc(sizeof(struct Node));
-  printf("sizeof(struct Node): %ld\n",sizeof(struct Node));
-  printf("sizeof(data): %ld\n",sizeof(d));
-  printf("new: %p\n",new);
-  printf("sizeof(new): %ld\n",sizeof(new));
-  printf("end: %d\n\n\n",e);
-  if(e == Head) {
-    if(r->len == 0) {
-      new->np[Head] = 0;
-      new->np[Tail] = 0;
-      new->data = d;
-      r->len = r->len + 1;
-      r->ht[Head] = new;
-      r->ht[Tail] = new;
-    } else { 
-      new->np[Tail] = r->ht[Head];
-      new->np[Head] = 0;
-      new->data = d;
-      r->len = r->len + 1;
-      r->ht[Head]->np[Head] = new;
-      r->ht[Head] = new;
-    }
+//Put Element on the end of the deq on either end. 
+static void put(Rep r, End e, Data d) { //Param: Rep (Deq) End (Head/Tail) Data
+  Node new = malloc(sizeof(struct Node)); //24bytes 16 for neighbors 8 for Data
+  if(r->len == 0) { //Add on Empty Deq
+    new->np[Head] = 0; //No neighbors
+    new->np[Tail] = 0; //No neighbors
+    new->data = d; 
+    r->len = r->len + 1;
+    r->ht[Head] = new; //The new Head
+    r->ht[Tail] = new; //The new Tail
+    return;
+  } 
+
+  if(e == Head) { //Add on Head of Deq
+    new->np[Head] = 0; //New Head so nothing before it
+    new->np[Tail] = r->ht[Head]; //New Head points to old Head
+    new->data = d;
+    r->len = r->len + 1;
+    r->ht[Head]->np[Head] = new; //Set old Head prev neighbor to new Head
+    r->ht[Head] = new; //New Head is now the Head
+    return;
   }
-  if(e == Tail) {
-    if(r->len == 0) {
-      new->np[Tail] = 0;
-      new->np[Head] = 0;
-      new->data = d;
-      r->len = r->len + 1;
-      r->ht[Head] = new;
-      r->ht[Tail] = new;
-    } else {
-      new->np[Tail] = 0;
-      new->np[Head] = r->ht[Tail];
-      new->data = d;
-      r->len = r->len + 1;
-      r->ht[Tail]->np[Tail] = new;
-      r->ht[Tail] = new;
-    } 
+  
+  if(e == Tail) { //Add on Tail of Deq
+    new->np[Tail] = 0; //New Tail so nothing after it
+    new->np[Head] = r->ht[Tail]; //New Tail previous set to current Tail
+    new->data = d;
+    r->len = r->len + 1;
+    r->ht[Tail]->np[Tail] = new; //Set current Tail next to new Tail
+    r->ht[Tail] = new; //New Tail is now the Tail
   }
+  printf("Error: Bad argument put(End e)\n");
 }
 
 static Data ith(Rep r, End e, int i)  { 
   if(i < 0 || i >= r->len) {
+    printf("Error: Bad argument ith(int i)\n");
     return 0;
   }
 
@@ -93,7 +87,7 @@ static Data ith(Rep r, End e, int i)  {
       curInd = curInd + 1;
     }
   }
-  printf("oh no\n");
+  printf("Error: Bad Argument ith(End e)\n");
   return 0; 
 }
 
@@ -104,6 +98,7 @@ static Data get(Rep r, End e) {
   if(e == Tail) {
     return r->ht[Tail]->data;
   }
+  printf("Error: Bad Argument get(End e)");
   return 0;
 }
 
@@ -113,20 +108,18 @@ static Data rem(Rep r, End e, Data d) {
     for(Node cur = r->ht[Head]; cur; cur = cur->np[Tail]) {
       if(cur->data == d) {
 	ret = cur->data;
-        if(cur->np[Head] != 0) {
-	  cur->np[Head]->np[Tail] = 0;
-	  cur->np[Head] = 0;
+        if(cur->np[Head] != 0) { //Neighbor before is present
+	  cur->np[Head]->np[Tail] = 0; //look on the other side?
+	  cur->np[Head] = 0; //remove link
 	}
-	if(cur->np[Head] == 0) {
-	  //else remove is head
+	if(cur->np[Head] == 0) { //removing the head
 	  r->ht[Head]  = cur->np[Tail];
 	}
-	if(cur->np[Tail] != 0) {
-	  cur->np[Tail]->np[Head] = 0;
-	  cur->np[Tail] = 0;
+	if(cur->np[Tail] != 0) { //Neighbor after is present
+	  cur->np[Tail]->np[Head] = 0; //look on the other side?
+	  cur->np[Tail] = 0; //remove link
 	}
-	if(cur->np[Tail] == 0) {
-	  //else remove is tail
+	if(cur->np[Tail] == 0) { //removing the tail
 	  r->ht[Tail] = cur->np[Head];
 	}
 	
