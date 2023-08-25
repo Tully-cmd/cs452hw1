@@ -1,7 +1,11 @@
+#Run the Deq shared library.
+
 #prog=deq
 #include ../GNUmakefile
 #try: main.o libdeq.so
 #	gcc -o $@ $< -L. -ldeq -Wl,-rpath=.
+
+#Run the Deq I implemented.
 
 val: deq #valgrind
 	printf "\n\n"
