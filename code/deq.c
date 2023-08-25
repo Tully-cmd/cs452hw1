@@ -110,15 +110,40 @@ static Data ith(Rep r, End e, int i)  {
   return 0; 
 }
 
-//TODO Document
+// Pop and remove the last node from the deq.
+// Params: Rep (deq) End (Head or Tail).
+// Return Data void *
 static Data get(Rep r, End e) {
-  //TODO check if list is empty or not
-  //TODO remove
+  Data ret = 0;
+  if(r->ht[Head] == 0 || r->ht[Tail] == 0) {
+    ERROR("Get on empty Deq\n");
+    exit(1);
+  }
+ 
+  if(r->ht[Head] == r->ht[Tail]) { //Last element
+    ret = r->ht[Head]->data;
+    free(r->ht[Tail]);
+    r->ht[Head] = 0;
+    r->ht[Tail] = 0;
+    r->len = r->len - 1;
+    return ret;
+  }
+
   if(e == Head) {
-    return r->ht[Head]->data;
+    ret = r->ht[Head]->data;
+    r->ht[Head] = r->ht[Head]->np[Tail];  //Set Head to the next Node.
+    free(r->ht[Head]->np[Head]);
+    r->ht[Head]->np[Head] = 0;  //Set new Head previous Node to null.
+    r->len = r->len - 1;
+    return ret;
   }
   if(e == Tail) {
-    return r->ht[Tail]->data;
+    ret = r->ht[Tail]->data;
+    r->ht[Tail] = r->ht[Tail]->np[Head]; //Set Tail to the prev NOde.
+    free(r->ht[Tail]->np[Tail]);
+    r->ht[Tail]->np[Tail] = 0;
+    r->len = r->len - 1;
+    return ret;
   }
   ERROR("Bad argument get(End e) Expected either Head or Tail\n");
   exit(1);
@@ -128,7 +153,7 @@ static Data get(Rep r, End e) {
 //Remove Deq Node from List. Matching the pointer of the Data.
 static Data rem(Rep r, End e, Data d) { //Params: Rep (Deq), End (0|1), Data *
 					//Return: Data void * (static)
-  Data ret;	
+  Data ret = 0;	
   if(e == Head) { 
     for(Node cur = r->ht[Head]; cur; cur = cur->np[Tail]) { //Start from Head.
       if(cur->data == d) {
@@ -149,6 +174,7 @@ static Data rem(Rep r, End e, Data d) { //Params: Rep (Deq), End (0|1), Data *
 	  r->ht[Tail] = cur->np[Head];
 	}
         free(cur);
+	r->len = r->len - 1;
 	return ret;
       }
     }
