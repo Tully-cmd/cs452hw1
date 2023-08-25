@@ -4,8 +4,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//Call either Warning or Error with a string.
+//WARNLOC & ERRORLOC will print to standard error;
+//file:lineNum error/warning: stringMessage
+//example: deq.c:49 warning: Attempting remove from empty list 
+
 #define WARNLOC(file,line,kind,args...) do {  \
-  fprintf(stderr,"%s:%d: ",file,line);        \
+  fprintf(stderr,"\n%s:%d: ",file,line);      \
   fprintf(stderr,"%s: ",kind);                \
   fprintf(stderr,args);                       \
   fprintf(stderr,"\n");                       \

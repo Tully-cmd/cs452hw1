@@ -8,6 +8,8 @@
 
 typedef void *Deq; //type definition, pointer to Deq
 typedef void *Data; //type definition, pointer to some Data
+		    //Deq user makes sure Data is stored in Dynamic Memory
+		    //Deq user manages freeing memory. Unless deq_del on deq
 
 extern Deq deq_new(); //malloc a new Deq Head ptr, tail ptr, int len 24 bytes
 extern int deq_len(Deq q); //return Deq len int
@@ -28,6 +30,6 @@ typedef Str  (*DeqStrF)(Data d); //Stringify data
 
 extern void deq_map(Deq q, DeqMapF f); // foreach
 extern void deq_del(Deq q, DeqMapF f); // free. 0 in DeqMapF skips map
-extern Str  deq_str(Deq q, DeqStrF f); // toString the Deq. 0 frees the strings
+extern Str  deq_str(Deq q, DeqStrF f); // toString the Deq. 0 frees the strings //TODO test this
 
 #endif
