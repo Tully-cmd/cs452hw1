@@ -1,5 +1,9 @@
-#define __STDC_WANT_LIB_EXT2__ 1 //Needed for asprintf on my machine
-#define _GNU_SOURCE //Needed for asprintf on my machine 
+//Implementation of Deq. A Deq contains nodes and a pointer to the ends.
+//CS452 Operating Systems Fall 2023. Professor Buffenbarger.
+//Author: Tully Martin.
+
+#define __STDC_WANT_LIB_EXT2__ 1 //Needed for asprintf on my machine.
+#define _GNU_SOURCE //Needed for asprintf on my machine. 
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -139,9 +143,9 @@ static Data get(Rep r, End e) {
   }
   if(e == Tail) {
     ret = r->ht[Tail]->data;
-    r->ht[Tail] = r->ht[Tail]->np[Head]; //Set Tail to the prev NOde.
+    r->ht[Tail] = r->ht[Tail]->np[Head]; //Set Tail to the prev Node.
     free(r->ht[Tail]->np[Tail]);
-    r->ht[Tail]->np[Tail] = 0;
+    r->ht[Tail]->np[Tail] = 0;  //Set new Tail next to null.
     r->len = r->len - 1;
     return ret;
   }

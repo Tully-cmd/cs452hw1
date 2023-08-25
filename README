@@ -1,1 +1,8 @@
-Kreygasm
+deq
+
+OPTIONS
+-d (default) run tests from main
+-i interactive mode
+-f read from file 
+-v run with valgrind
+-g enable gdb and disable optimization (without this flag compile with -O)
