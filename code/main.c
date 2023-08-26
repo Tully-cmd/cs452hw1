@@ -7,7 +7,15 @@
 
 typedef enum {Head,Tail,Ends} End;
 
-int main() {
+void printDeqString(Deq q) {
+  printf("\nDeq:\t");
+  char *s1 = deq_str(q,0); //print list toString.
+  printf("%s\ndeq_len(q):\t%d\n\n",s1,deq_len(q));
+  free(s1);
+}
+//Deq throws errors/warnings and will exit if test makes it to end of method
+//and returns 0 then the test passed.
+int testString() {
   Deq q=deq_new();
 
   //malloc strings 
@@ -39,21 +47,13 @@ int main() {
   deq_head_put(q,(void*) str5);
   printf("deq_tail_put:\t%s\n",str1);
   deq_tail_put(q,(void*) str6);
-
-  printf("\nDeq:\t");
-  char *s1 = deq_str(q,0); //print list toString.
-  printf("%s\ndeq_len(q):\t%d\n\n",s1,deq_len(q));
-  free(s1);
+  printDeqString(q);
 
   //Test Pop Head and Tail
   printf("Testing Pop get(Head|Tail)\n\n");
   printf("Pop Head:\t%s\n",(char *)deq_head_get(q));
-  printf("Pop Tail:\t%s\n\n",(char *)deq_tail_get(q));
-
-  printf("Deq:\t");
-  char * s2 = deq_str(q,0); //print list toString.
-  printf("%s\ndeq_len(q):\t%d\n\n",s2,deq_len(q));
-  free(s2);
+  printf("Pop Tail:\t%s\n",(char *)deq_tail_get(q));
+  printDeqString(q);
 
   printf("Testing ith\n\n");
   for(int i = 0; i < deq_len(q); i = i + 1) {
@@ -63,14 +63,15 @@ int main() {
   for(int i = 0; i < deq_len(q); i = i + 1) {
     printf("deq_tail_ith[%d]:\t%s\n",i,(char *) deq_tail_ith(q,i));
   }
+
   //Test remove
   printf("Testing remove\n\n");
-  printf("deq_head_rem: %s\n\n",(char *)deq_head_rem(q,str4)); 
-  printf("Deq:\t");
-  char * s3 = deq_str(q,0);
-  printf("%s\ndeq_len(q):\t%d\n\n",s3,deq_len(q));
+  printf("deq_head_rem: %s\n",(char *)deq_head_rem(q,str4)); 
+  printDeqString(q);
+
+  //TODO compare expected to actual output to check correctness.
+  
   //Free memory
-  free(s3);
   deq_del(q,0);
   free(str1);
   free(str2);
@@ -78,5 +79,23 @@ int main() {
   free(str4);
   free(str5);
   free(str6);
+  return 0;
+}
+
+int main() {
+  int numTests = 0;
+  int numPassed = 0;
+
+  printf("Testing a Deq of strings\n");
+  if(testString() != 0) {
+    ERROR("Test String\n");
+  } else {
+    numPassed = numPassed + 1;
+  }
+  numTests = numTests + 1;
+
+  //TODO Test malloced ints, structs, chars, doubles, longs
+
+  printf("\n%d out of %d tests passed\n",numPassed,numTests);
   return 0;
 }
