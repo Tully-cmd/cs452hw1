@@ -206,6 +206,7 @@ static Data rem(Rep r, End e, Data d) { //Params: Rep (Deq), End (0|1), Data *
 	  r->ht[Tail] = cur->np[Head];
 	}
         free(cur);
+	r->len = r->len - 1;
 	return ret;
       }
     }
