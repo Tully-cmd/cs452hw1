@@ -94,9 +94,6 @@ static Data ith(Rep r, End e, int i)  {
       }
       curInd = curInd + 1;
     }
-    WARN("Could not find the Node to return ith(%d)\n",i); //Data not found.
-    ERROR("Node not found\n");
-    exit(1);
   }
   if(e == Tail) {
     for(Node cur = r->ht[Tail]; cur; cur = cur->np[Head]) { //Start from Tail.
@@ -105,9 +102,6 @@ static Data ith(Rep r, End e, int i)  {
       }
       curInd = curInd + 1;
     }
-    WARN("Could not find the Node to return ith(%d)\n",i);
-    ERROR("Node not found\n");
-    exit(1);
   }
   ERROR("Bad argument ith(End e) Expected either Head or Tail\n");
   exit(1);

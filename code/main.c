@@ -58,6 +58,10 @@ void testPutHeadString(Deq q, Str s) {
 }
 
 void testGetHeadString(Deq q) {
+  if(rep(q)->len == 0) {
+    WARN("Attempting Pop off of empty list. deq_head_get\n");
+    return;
+  }
   char * head = rep(q)->ht[Head]->data;
   //printf("Pop Head:\t%s\n",head);
   if(strcmp(deq_head_get(q),head) != 0) {
@@ -68,6 +72,10 @@ void testGetHeadString(Deq q) {
 }
 
 void testGetTailString(Deq q) {
+  if(rep(q)->len == 0) {
+    WARN("Attempting Pop off of empty list. deq_tail_get\n");
+    return;
+  }
   char * tail = rep(q)->ht[Tail]->data;
   //printf("Pop Tail:\t%s\n",tail);
   if(strcmp(deq_tail_get(q),tail) != 0) {
@@ -77,7 +85,11 @@ void testGetTailString(Deq q) {
   }
 }
 
-void testIthHeadString(Deq q, int i) {
+void testIthHeadString(Deq q, int i) { 
+  if(i < 0 || i >= rep(q)->len) {
+    WARN("Attempting ith on bad index deq_tail_ith\n");
+    return;
+  }
   int curInd = 0;
   for(Node cur = rep(q)->ht[Head]; cur; cur = cur->np[Tail]) {
     if(curInd == i) {
@@ -93,6 +105,10 @@ void testIthHeadString(Deq q, int i) {
 }
 
 void testIthTailString(Deq q, int i) {
+  if(i < 0 || i >= rep(q)->len) {
+    WARN("Attempting ith on bad index deq_tail_ith\n");
+    return;
+  }
   int curInd = 0;
   for(Node cur = rep(q)->ht[Tail]; cur; cur = cur->np[Head]) {
     if(curInd == i) {
