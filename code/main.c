@@ -24,42 +24,51 @@ int main() {
   "d){if(e==Head){if(r->len==0){structNode*new=malloc(sizeof(structNode));new-"
   ">np[Head]0;new->np[Tail]=0;new->data=d;r->len=r->len+r\0");
   Str str6 = strdup("777777\0");
-
+  
+  //Test put
+  printf("\nTesting put\n\n");
+  printf("deq_tail_put:\t%s\n",str1);
   deq_tail_put(q,(void*) str1); //free after deq_del before exit
+  printf("deq_head_put:\t%s\n",str2);
   deq_head_put(q,(void*) str2);
+  printf("deq_head_put:\t%s\n",str3);
   deq_head_put(q,(void*) str3);
+  printf("deq_head_put:\t%s\n",str4);
   deq_head_put(q,(void*) str4); 
+  printf("deq_head_put:\t%s\n",str5);
   deq_head_put(q,(void*) str5);
+  printf("deq_tail_put:\t%s\n",str1);
   deq_tail_put(q,(void*) str6);
 
   printf("\nDeq:\t");
   char *s1 = deq_str(q,0); //print list toString.
-  printf("%s\n\n",s1);
+  printf("%s\ndeq_len(q):\t%d\n\n",s1,deq_len(q));
   free(s1);
 
-  printf("Before Pop deq_len(q): %d\n\n",deq_len(q));
-  printf("Pop Head: %s\n\n",(char *)deq_head_get(q));
-  printf("Pop Tail: %s\n\n",(char *)deq_tail_get(q));
-  printf("After Pop deq_len(q): %d\n\n",deq_len(q));
+  //Test Pop Head and Tail
+  printf("Testing Pop get(Head|Tail)\n\n");
+  printf("Pop Head:\t%s\n",(char *)deq_head_get(q));
+  printf("Pop Tail:\t%s\n\n",(char *)deq_tail_get(q));
 
   printf("Deq:\t");
   char * s2 = deq_str(q,0); //print list toString.
-  printf("%s\n\n",s2);
+  printf("%s\ndeq_len(q):\t%d\n\n",s2,deq_len(q));
   free(s2);
 
-  printf("Testing ith\n");
+  printf("Testing ith\n\n");
   for(int i = 0; i < deq_len(q); i = i + 1) {
-    printf("deq_head_ith[%d]: %s\n\n",i,(char *) deq_head_ith(q,i));
+    printf("deq_head_ith[%d]:\t%s\n",i,(char *) deq_head_ith(q,i));
   }
 
   for(int i = 0; i < deq_len(q); i = i + 1) {
-    printf("deq_tail_ith[%d]: %s\n\n",i,(char *) deq_tail_ith(q,i));
+    printf("deq_tail_ith[%d]:\t%s\n",i,(char *) deq_tail_ith(q,i));
   }
   //Test remove
+  printf("Testing remove\n\n");
   printf("deq_head_rem: %s\n\n",(char *)deq_head_rem(q,str4)); 
   printf("Deq:\t");
   char * s3 = deq_str(q,0);
-  printf("%s\n\n",s3);
+  printf("%s\ndeq_len(q):\t%d\n\n",s3,deq_len(q));
   //Free memory
   free(s3);
   deq_del(q,0);
