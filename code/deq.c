@@ -13,7 +13,7 @@
 #include "error.h"
 
 //Indices and size of array of node pointers
-typedef enum {Head,Tail,Ends} End;	// Head = 0, Tail = 1. Ends unused.
+typedef enum {Head,Tail,Ends} End;  // Head = 0, Tail = 1. Ends unused.
 
 //Node type implementation. Array of Node pointers of neighbors and data ptr.
 typedef struct Node {

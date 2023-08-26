@@ -1,6 +1,2 @@
 deq
 
-OPTIONS
--d (default) run tests from main
--v run with valgrind
--g enable gdb and disable optimization (without this flag compile with -O)

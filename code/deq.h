@@ -30,6 +30,6 @@ typedef Str  (*DeqStrF)(Data d); //Stringify data
 
 extern void deq_map(Deq q, DeqMapF f); // foreach
 extern void deq_del(Deq q, DeqMapF f); // free. 0 in DeqMapF skips map
-extern Str  deq_str(Deq q, DeqStrF f); // toString the Deq. 0 frees the strings //TODO test this
+extern Str  deq_str(Deq q, DeqStrF f); // toString the Deq. 0 frees the strings
 
 #endif
