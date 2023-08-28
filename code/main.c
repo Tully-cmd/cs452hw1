@@ -12,16 +12,14 @@ int main() {
   int numTests = 0;
   int numPassed = 0;
 
-  printf("Testing a Deq of strings\n");
   if(testString() != 0) {
-    ERROR("Test String\n");
+    WARN("Test String\n");
   } else {
     numPassed = numPassed + 1;
   }
   numTests = numTests + 1;
 
-  //TODO Test malloced ints, structs, chars, doubles, longs
-
-  printf("\n%d out of %d tests passed\n",numPassed,numTests);
+  printf("\n%d out of %d main tests passed %.2f%%\n"
+  ,numPassed,numTests,((float)numPassed/(float)numTests) * 100.0f);
   return 0;
 }

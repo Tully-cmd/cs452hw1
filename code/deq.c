@@ -72,18 +72,19 @@ static void put(Rep r, End e, Data d) { //Param: Rep (Deq) End (Head/Tail) Data
     r->ht[Tail] = new; //New Tail is now the Tail.
     return; 
   }
-  ERROR("Bad argument put(End e) Expected either Head or Tail\n");
-  exit(1);
+  //ERROR("Bad argument put(End e) Expected either Head or Tail\n");
+  //exit(1);
+  WARN("Bad argument put(End e) Expected either Head or Tail\n");
 }
 
 //Return ith Data from Deq from Head or Tail.
 //Params: Rep (Deq), End (Head/Tail), int (valid index 0 through len-1).
 //Return: Data void * 
 static Data ith(Rep r, End e, int i)  { 
-  if(i < 0 || i >= r->len) {  //Check if valid index.
-    ERROR("Bad argument ith(int i) Expected a valid list index\n");
-    exit(1);
-  }
+  //if(i < 0 || i >= r->len) {  //Check if valid index.
+  //  ERROR("Bad argument ith(int i) Expected a valid list index\n");
+  //  exit(1);
+  //}
 
   int curInd = 0;
 
@@ -103,8 +104,9 @@ static Data ith(Rep r, End e, int i)  {
       curInd = curInd + 1;
     }
   }
-  ERROR("Bad argument ith(End e) Expected either Head or Tail\n");
-  exit(1);
+  //ERROR("Bad argument ith(End e) Expected either Head or Tail\n");
+  //exit(1);
+  WARN("Bad argument ith(End e) Expected either Head or Tail\n");
   return 0; 
 }
 
@@ -113,10 +115,10 @@ static Data ith(Rep r, End e, int i)  {
 // Return Data void *
 static Data get(Rep r, End e) {
   Data ret = 0;
-  if(r->ht[Head] == 0 || r->ht[Tail] == 0) {
-    ERROR("Get on empty Deq\n");
-    exit(1);
-  }
+  //if(r->ht[Head] == 0 || r->ht[Tail] == 0) {
+  //  ERROR("Get on empty Deq\n");
+  //  exit(1);
+  //}
  
   if(r->ht[Head] == r->ht[Tail]) { //Last element
     ret = r->ht[Head]->data;
@@ -143,8 +145,9 @@ static Data get(Rep r, End e) {
     r->len = r->len - 1;
     return ret;
   }
-  ERROR("Bad argument get(End e) Expected either Head or Tail\n");
-  exit(1);
+  //ERROR("Bad argument get(End e) Expected either Head or Tail\n");
+  //exit(1);
+  WARN("Bad argument get(End e) Expected either Head or Tail\n");
   return 0;
 }
 
@@ -183,8 +186,9 @@ static Data rem(Rep r, End e, Data d) { //Params: Rep (Deq), End (0|1), Data *
       }
     }
     WARN("Could not find the Node to remove rem(%p)\n",d);
-    ERROR("Node not found\n");
-    exit(1);
+    return 0;
+    //ERROR("Node not found\n");
+    //exit(1);
   }
   if(e == Tail) { 
     for(Node cur = r->ht[Tail]; cur; cur = cur->np[Head]) { //Start from Tail.
@@ -217,11 +221,13 @@ static Data rem(Rep r, End e, Data d) { //Params: Rep (Deq), End (0|1), Data *
       }
     }
     WARN("Could not find the Node to remove rem(%p)\n",d);
-    ERROR("Node not found\n");
-    exit(1);
+    return 0;
+    //ERROR("Node not found\n");
+    //exit(1);
   }
-  ERROR("Bad argument rem(End e) Expected either Head or Tail\n");
-  exit(1);
+  //ERROR("Bad argument rem(End e) Expected either Head or Tail\n");
+  //exit(1);
+  WARN("Bad argument rem(End e) Expected either Head or Tail\n");
   return 0; 
 }
 
