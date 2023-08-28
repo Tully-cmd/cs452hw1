@@ -38,8 +38,8 @@ extern void printDeqString(Deq q) {
   free(s1);
 }
 extern void testPutTailString(Deq q, Str s) {
-  //printf("deq_tail_put:\t%s\n",s);
-  deq_tail_put(q,(void*) s); //free after deq_del before exit.
+  printf("deq_tail_put\t%s\n",s);
+  deq_tail_put(q,(void*) s); 
   if(rep(q)->ht[Tail]->data != s) {
     ERROR("deq_tail_put\t%s Failed!\n",s);
   } else {
@@ -47,9 +47,8 @@ extern void testPutTailString(Deq q, Str s) {
   }
 }
 extern void testPutHeadString(Deq q, Str s) {
-  //printf("deq_head_put:\t%s\n",s);
+  printf("deq_head_put\t%s\n",s);
   deq_head_put(q,(void*) s); 
-//  printf("data: %s\n",(Str) rep(q)->ht[Head]->data);
   if(strcmp(rep(q)->ht[Head]->data,s) != 0) {
     ERROR("deq_head_put\tFailed!\n");
   } else {
@@ -63,11 +62,11 @@ extern void testGetHeadString(Deq q) {
     return;
   }
   char * head = rep(q)->ht[Head]->data;
-  //printf("Pop Head:\t%s\n",head);
+  printf("Pop Head deq_head_get\n");
   if(strcmp(deq_head_get(q),head) != 0) {
     ERROR("deq_head_get\tFailed!\n");
   } else {
-    printf("deq_head_get\tPassed\n");
+    printf("deq_head_get\t%s\tPassed\n",head);
   }
 }
 
@@ -77,11 +76,11 @@ extern void testGetTailString(Deq q) {
     return;
   }
   char * tail = rep(q)->ht[Tail]->data;
-  //printf("Pop Tail:\t%s\n",tail);
+  printf("Pop Tail deq_tail_get\n");
   if(strcmp(deq_tail_get(q),tail) != 0) {
     ERROR("deq_tail_get\tFailed!\n");
   } else {
-    printf("deq_tail_get\tPassed\n");
+    printf("deq_tail_get\t%s\tPassed\n",tail);
   }
 }
 
@@ -90,17 +89,17 @@ extern void testIthHeadString(Deq q, int i) {
     WARN("Attempting ith on bad index deq_tail_ith\n");
     return;
   }
+  printf("deq_head_ith(%d)\n",i);
   int curInd = 0;
   for(Node cur = rep(q)->ht[Head]; cur; cur = cur->np[Tail]) {
     if(curInd == i) {
       if(strcmp(cur->data,deq_head_ith(q,i)) == 0) {
-        printf("deq_head_ith(%d)\t%s\tPassed\n",i,(char *)cur->data);
+        printf("deq_head_ith(%d)    %s\tPassed\n",i,(char *)cur->data);
 	return;
       }
     }
     curInd = curInd + 1;
   }
-  //printf("deq_head_ith[%d]:\t%s\n",i,(char *) deq_head_ith(q,i));
   ERROR("deq_head_ith()\tFailed!\n");
 }
 
@@ -110,10 +109,11 @@ extern void testIthTailString(Deq q, int i) {
     return;
   }
   int curInd = 0;
+  printf("deq_tail_ith(%d)\n",i);
   for(Node cur = rep(q)->ht[Tail]; cur; cur = cur->np[Head]) {
     if(curInd == i) {
       if(strcmp(cur->data,deq_tail_ith(q,i)) == 0) {
-        printf("deq_tail_ith(%d)\t%s\tPassed\n",i,(char *)cur->data);
+        printf("deq_tail_ith(%d)    %s\tPassed\n",i,(char *)cur->data);
 	return;
       }
     }
@@ -123,6 +123,7 @@ extern void testIthTailString(Deq q, int i) {
 }
 
 extern void testRemHeadString(Deq q, Str s) {
+  printf("deq_head_rem\t%s\n",s);
   for(Node cur = rep(q)->ht[Head]; cur; cur = cur->np[Tail]) {
     if(strcmp(s,cur->data) == 0) {
       if(strcmp(deq_head_rem(q,s),s) == 0) {
@@ -135,6 +136,7 @@ extern void testRemHeadString(Deq q, Str s) {
 }
 
 extern void testRemTailString(Deq q, Str s) {
+  printf("deq_tail_rem\t%s\n",s);
   for(Node cur = rep(q)->ht[Tail]; cur; cur = cur->np[Head]) {
     if(strcmp(s,cur->data) == 0) {
       if(strcmp(s,deq_tail_rem(q,s)) == 0) {
@@ -163,6 +165,16 @@ extern int testString() {
   "d){if(e==Head){if(r->len==0){structNode*new=malloc(sizeof(structNode));new-"
   ">np[Head]0;new->np[Tail]=0;new->data=d;r->len=r->len+r\0");
   Str str6 = strdup("777777\0");
+  Str str7 = strdup("wtf is this?\0");
+  Str str8 = strdup("Quicksilver KEKW\0");
+  Str str9 = strdup("KEHK DOUBLE YOU\0");
+  Str str10 = strdup("if it aint Magic the Gathering it\0");
+  Str str11 = strdup("The duel results are kinda anit climatic.\0");
+  Str str12 = strdup("whens exodia?\0");
+  Str str13 = strdup("GG\0");
+  Str str14 = strdup("Whats the bounty do we need to do anythi\0");
+  Str str15 = strdup("yeah I assume this is a good game being \0");
+  Str str16 = strdup("Stark Tower POG\0");
   
   //Test put
   printf("\nTesting put\n\n");
@@ -172,12 +184,25 @@ extern int testString() {
   testPutHeadString(q,str4);
   testPutHeadString(q,str5);
   testPutTailString(q,str6);
+  testPutTailString(q,str7);
+  testPutTailString(q,str8);
+  testPutHeadString(q,str9);
+  testPutTailString(q,str10);
+  testPutHeadString(q,str11);
+  testPutHeadString(q,str12);
+  testPutTailString(q,str13);
+  testPutTailString(q,str14);
+  testPutTailString(q,str15);
+  testPutHeadString(q,str16);
+
   printDeqString(q);
 
   //Test Pop Head and Tail
   printf("Testing Pop get(Head|Tail)\n\n");
   testGetHeadString(q);
   testGetTailString(q);
+  testGetTailString(q);
+  testGetHeadString(q);
   printDeqString(q);
 
   printf("Testing ith\n\n");
@@ -191,8 +216,16 @@ extern int testString() {
 
   //Test remove
   printf("\nTesting remove\n\n");
-  testRemHeadString(q,str4);
-  testRemTailString(q,str3);
+  testRemHeadString(q,str5);
+  testRemHeadString(q,str3);
+  testRemTailString(q,str9);
+  testRemHeadString(q,str11);
+  testRemTailString(q,str4);
+  //testRemTailString(q,str14);
+  testRemHeadString(q,str13);
+  testRemHeadString(q,str10);
+  testRemTailString(q,str8);
+  testRemTailString(q,str7);
   printDeqString(q);
 
   //Free memory
@@ -203,5 +236,15 @@ extern int testString() {
   free(str4);
   free(str5);
   free(str6);
+  free(str7);
+  free(str8);
+  free(str9);
+  free(str10);
+  free(str11);
+  free(str12);
+  free(str13);
+  free(str14);
+  free(str15);
+  free(str16);
   return 0;
 }

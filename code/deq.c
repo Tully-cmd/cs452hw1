@@ -157,21 +157,27 @@ static Data rem(Rep r, End e, Data d) { //Params: Rep (Deq), End (0|1), Data *
       if(cur->data == d) {
 	ret = cur->data;
 	
-	//Set the removed nodes next/prev pointers to NULL.
+	//Fix node next/prev pointers for the remove.
 	
-        if(cur->np[Head] != 0) { //Neighbor before is present.
-	  cur->np[Head]->np[Tail] = 0;
+        if(cur->np[Head] != 0 && cur->np[Tail] != 0) { //Neighbors are present.
+	  cur->np[Head]->np[Tail] = cur->np[Tail];
+	  cur->np[Tail]->np[Head] = cur->np[Head];
 	  cur->np[Head] = 0;
-	} else {  //No neighbor before. Removing Tail.
-	  r->ht[Head]  = cur->np[Tail];
-	}
-	if(cur->np[Tail] != 0) { //Neighbor after is present.
-	  cur->np[Tail]->np[Head] = 0;
 	  cur->np[Tail] = 0;
-	} else { //No neighbor after. Removing Tail.
-	  r->ht[Tail] = cur->np[Head];
 	}
-        free(cur);
+	if(cur->np[Head] != 0 && cur->np[Tail] == 0) { //Prev neighbor only.
+	  //Remove Tail
+	  r->ht[Tail] = cur->np[Head];
+	  r->ht[Tail]->np[Tail] = 0;
+	  cur->np[Head] = 0;
+	}
+	if(cur->np[Head] == 0 && cur->np[Tail] != 0) { //Next neighbor only.
+	  //Remove Head
+	  r->ht[Head] = cur->np[Tail];
+	  r->ht[Head]->np[Head] = 0;
+	  cur->np[Tail] = 0;
+	}
+	free(cur);
 	r->len = r->len - 1;
 	return ret;
       }
@@ -185,19 +191,25 @@ static Data rem(Rep r, End e, Data d) { //Params: Rep (Deq), End (0|1), Data *
       if(cur->data == d) {
 	ret = cur->data;
 	
-	//Set the removed nodes next/prev pointers to NULL.
+	//Fix node next/prev pointers for the remove.
 	
-        if(cur->np[Head] != 0) { //Neighbor before is present.
-	  cur->np[Head]->np[Tail] = 0;
+        if(cur->np[Head] != 0 && cur->np[Tail] != 0) { //Neighbors are present.
+	  cur->np[Head]->np[Tail] = cur->np[Tail];
+	  cur->np[Tail]->np[Head] = cur->np[Head];
 	  cur->np[Head] = 0;
-	} else {  //No neighbor before. Removing Tail.
-	  r->ht[Head]  = cur->np[Tail];
-	}
-	if(cur->np[Tail] != 0) { //Neighbor after is present.
-	  cur->np[Tail]->np[Head] = 0;
 	  cur->np[Tail] = 0;
-	} else { //No neighbor after. Removing Tail.
+	}
+	if(cur->np[Head] != 0 && cur->np[Tail] == 0) { //Prev neighbor only.
+	  //Remove Tail
 	  r->ht[Tail] = cur->np[Head];
+	  r->ht[Tail]->np[Tail] = 0;
+	  cur->np[Head] = 0;
+	}
+	if(cur->np[Head] == 0 && cur->np[Tail] != 0) { //Next neighbor only.
+	  //Remove Head
+	  r->ht[Head] = cur->np[Tail];
+	  r->ht[Head]->np[Head] = 0;
+	  cur->np[Tail] = 0;
 	}
         free(cur);
 	r->len = r->len - 1;
