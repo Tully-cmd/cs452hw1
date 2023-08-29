@@ -1,2 +1,10 @@
-deq
+deq Tully Martin CS452 Fall 2023
+
+cd into code directory.
+
+run 'make'.
+
+run 'make -f makefile' to run the provided shared library on the test suite.
+
+run 'make clean' to clean working directory.
 

@@ -17,5 +17,5 @@ deq.o: deq.c #compile deq
 	gcc -Wall -c -g deq.c
 
 clean: #clean remove object and executables and clear screen
-	rm -f main.o deq.o prg a.out deq
+	rm -f main.o deq.o prg a.out deq deq.d main.d
 	clear

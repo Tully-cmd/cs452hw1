@@ -441,7 +441,8 @@ extern int testString() {
   n += testGetTailString(q); t += 1;
   
   printDeqString(q);
-
+  
+  //ith
   printf("Testing ith\n\n");
   for(int i = 0; i < deq_len(q); i = i + 1) {
     n += testIthHeadString(q,i); t += 1;
