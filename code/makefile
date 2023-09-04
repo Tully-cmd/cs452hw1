@@ -2,5 +2,5 @@
 
 prog=deq
 include ../GNUmakefile
-try: main.o libdeq.so
+try: main.o liblistdeq.so
 	gcc -o $@ $< -L. -ldeq -Wl,-rpath=.

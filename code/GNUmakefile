@@ -5,8 +5,8 @@ val: deq #valgrind
 	valgrind --leak-check=full --leak-resolution=high ./prg
 	printf "\n\n"
 
-deq: main.o deq.o libdeq.so#linker step
-	gcc -o prg main.o deq.o -L libdeq.so -Wall
+deq: main.o deq.o liblistdeq.so#linker step
+	gcc -o prg main.o deq.o -L ./liblistdeq.so -Wall
 
 #g debug (gdb)
 #-O optimization not debug mode
