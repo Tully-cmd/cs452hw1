@@ -128,82 +128,32 @@ static Data get(Rep r, End e) {
 
 //Remove Deq Node from List. Matching the pointer of the Data.
 static Data rem(Rep r, End e, Data d) { //Params: Rep (Deq), End (0|1), Data *
-					//Return: Data void * (static)
-  Data ret = 0;	
-  if(e == Head) { 
-    for(Node cur = r->ht[Head]; cur; cur = cur->np[Tail]) { //Start from Head.
-      if(cur->data == d) {
-	ret = cur->data;
-	
-	//Fix node next/prev pointers for the remove.
-	
-        if(cur->np[Head] != 0 && cur->np[Tail] != 0) { //Neighbors are present.
-	  cur->np[Head]->np[Tail] = cur->np[Tail];
-	  cur->np[Tail]->np[Head] = cur->np[Head];
-	  cur->np[Head] = 0;
-	  cur->np[Tail] = 0;
-	}
-	if(cur->np[Head] != 0 && cur->np[Tail] == 0) { //Prev neighbor only.
-	  //Remove Tail
-	  r->ht[Tail] = cur->np[Head];
-	  r->ht[Tail]->np[Tail] = 0;
-	  cur->np[Head] = 0;
-	}
-	if(cur->np[Head] == 0 && cur->np[Tail] != 0) { //Next neighbor only.
-	  //Remove Head
-	  r->ht[Head] = cur->np[Tail];
-	  r->ht[Head]->np[Head] = 0;
-	  cur->np[Tail] = 0;
-	}
-	free(cur);
-	r->len = r->len - 1;
-	return ret;
+                    //Return: Data void * (static)
+  for(Node cur = r->ht[e]; cur; cur = cur->np[!e]) { //Start from given end.
+    if(cur->data == d) {
+      Data ret = cur->data;
+
+      //Fix node next/prev pointers for the remove.
+      if(cur->np[Head] && cur->np[Tail]) { //Neighbors are present.
+        cur->np[Head]->np[Tail] = cur->np[Tail];
+        cur->np[Tail]->np[Head] = cur->np[Head];
+      } else {
+        // Removing head or tail
+        End removeEnd = cur->np[!e] ? e : !e;
+        r->ht[removeEnd] = cur->np[!removeEnd];
+        if(r->ht[removeEnd]) {
+          r->ht[removeEnd]->np[removeEnd] = 0;
+        }
       }
+
+      free(cur);
+      r->len--;
+      return ret;
     }
-    WARN("Could not find the Node to remove rem(%p)\n",d);
-    return 0;
-    //ERROR("Node not found\n");
-    //exit(1);
   }
-  if(e == Tail) { 
-    for(Node cur = r->ht[Tail]; cur; cur = cur->np[Head]) { //Start from Tail.
-      if(cur->data == d) {
-	ret = cur->data;
-	
-	//Fix node next/prev pointers for the remove.
-	
-        if(cur->np[Head] != 0 && cur->np[Tail] != 0) { //Neighbors are present.
-	  cur->np[Head]->np[Tail] = cur->np[Tail];
-	  cur->np[Tail]->np[Head] = cur->np[Head];
-	  cur->np[Head] = 0;
-	  cur->np[Tail] = 0;
-	}
-	if(cur->np[Head] != 0 && cur->np[Tail] == 0) { //Prev neighbor only.
-	  //Remove Tail
-	  r->ht[Tail] = cur->np[Head];
-	  r->ht[Tail]->np[Tail] = 0;
-	  cur->np[Head] = 0;
-	}
-	if(cur->np[Head] == 0 && cur->np[Tail] != 0) { //Next neighbor only.
-	  //Remove Head
-	  r->ht[Head] = cur->np[Tail];
-	  r->ht[Head]->np[Head] = 0;
-	  cur->np[Tail] = 0;
-	}
-        free(cur);
-	r->len = r->len - 1;
-	return ret;
-      }
-    }
-    WARN("Could not find the Node to remove rem(%p)\n",d);
-    return 0;
-    //ERROR("Node not found\n");
-    //exit(1);
-  }
-  //ERROR("Bad argument rem(End e) Expected either Head or Tail\n");
-  //exit(1);
-  WARN("Bad argument rem(End e) Expected either Head or Tail\n");
-  return 0; 
+
+  WARN("Could not find the Node to remove rem(%p)\n", d);
+  return 0;
 }
 
 //Malloc and return a new Deq.
