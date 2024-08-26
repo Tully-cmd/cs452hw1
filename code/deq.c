@@ -36,45 +36,30 @@ static Rep rep(Deq q) { 		//Return: Rep (prt->Deq). Param: Deq q.
   return (Rep)q;	                 
 }
 
-//Put Element on the end of the deq on either end. 
+//Put Element on the end of the deq on either end.
 static void put(Rep r, End e, Data d) { //Param: Rep (Deq) End (Head/Tail) Data
   Node new = malloc(sizeof(struct Node)); //24bytes 16 for neighbors 8 for Data
   if(new == NULL) { //malloc failed.
     ERROR("Failed to allocate memory for new Node!\n");
     exit(1);
   }
-  if(r->len == 0) { //Add on Empty Deq
-    new->np[Head] = 0; //No neighbors
-    new->np[Tail] = 0; //No neighbors
-    new->data = d; 
-    r->len = r->len + 1;
-    r->ht[Head] = new; //The new Head
-    r->ht[Tail] = new; //The new Tail
-    return;
-  } 
 
-  if(e == Head) { //Add on Head of Deq.
-    new->np[Head] = 0; //New Head so nothing before it.
-    new->np[Tail] = r->ht[Head]; //New Head points to old Head.
-    new->data = d;
-    r->len = r->len + 1;
-    r->ht[Head]->np[Head] = new; //Set old Head prev neighbor to new Head.
-    r->ht[Head] = new; //New Head is now the Head.
-    return;
+  new->data = d;
+  new->np[Head] = new->np[Tail] = 0; // Initialize both pointers to 0
+
+  if(r->len == 0) { //Add on Empty Deq
+    r->ht[Head] = r->ht[Tail] = new; //The new node is both Head and Tail
+  } else {
+    new->np[!e] = r->ht[e]; //New node points to old end
+    r->ht[e]->np[e] = new; //Old end points to new node
+    r->ht[e] = new; //New node becomes the new end
   }
-  
-  if(e == Tail) { //Add on Tail of Deq.
-    new->np[Tail] = 0; //New Tail so nothing after it.
-    new->np[Head] = r->ht[Tail]; //New Tail previous neighbor set to cur Tail.
-    new->data = d;
-    r->len = r->len + 1;
-    r->ht[Tail]->np[Tail] = new; //Set current Tail next neighbor to new Tail.
-    r->ht[Tail] = new; //New Tail is now the Tail.
-    return; 
+
+  r->len++; // Increment length after successful addition
+
+  if(e != Head && e != Tail) {
+    WARN("Bad argument put(End e) Expected either Head or Tail\n");
   }
-  //ERROR("Bad argument put(End e) Expected either Head or Tail\n");
-  //exit(1);
-  WARN("Bad argument put(End e) Expected either Head or Tail\n");
 }
 
 //Return ith Data from Deq from Head or Tail.
