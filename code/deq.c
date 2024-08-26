@@ -151,14 +151,16 @@ static Data rem(Rep r, End e, Data d) { //Params: Rep (Deq), End (0|1), Data *
           // If so, we're removing the current end
           removeEnd = e;
         } else {
-          // If not, we're removing the last node, so the other end becomes the new removeEnd
+          // If not, we're removing the last node, so the other end becomes 
+		  // the new removeEnd
           removeEnd = !e;
         }
         // Update the deq's end pointer
         r->ht[removeEnd] = cur->np[!removeEnd];
         // If the new end exists, update its pointer
         if(r->ht[removeEnd]) {
-          r->ht[removeEnd]->np[removeEnd] = 0;
+          r->ht[removeEnd]->np[removeEnd] = 0; //nothing before a head or 
+		  									   //after a tail
         }
       }
      
