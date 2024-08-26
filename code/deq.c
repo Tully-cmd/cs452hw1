@@ -73,21 +73,11 @@ static Data ith(Rep r, End e, int i)  {
 
   int curInd = 0;
 
-  if(e == Head) {
-    for(Node cur = r->ht[Head]; cur; cur = cur->np[Tail]) { //Start from Head.
-      if(curInd == i) {
-        return cur->data;
-      }
-      curInd = curInd + 1;
+  for(Node cur = r->ht[e]; cur; cur = cur->np[!e]) { //End to end. 
+    if(curInd == i) {
+      return cur->data;
     }
-  }
-  if(e == Tail) {
-    for(Node cur = r->ht[Tail]; cur; cur = cur->np[Head]) { //Start from Tail.
-      if(curInd == i) {
-        return cur->data;  //Data found
-      }
-      curInd = curInd + 1;
-    }
+    curInd = curInd + 1;
   }
   //ERROR("Bad argument ith(End e) Expected either Head or Tail\n");
   //exit(1);
