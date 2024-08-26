@@ -7,6 +7,7 @@
 #include "deq.h"
 #include "error.h"
 #include "testDeqString.h"
+#include "testDeqInteger.h"
 
 int main() {
   int numTests = 0;
@@ -16,6 +17,13 @@ int main() {
     WARN("Test String\n");
   } else {
     numPassed = numPassed + 1;
+  }
+  numTests = numTests + 1;
+
+  if(testInt() != 0) {
+    WARN("Test Integer\n");
+  } else {
+	numPassed = numPassed + 1;
   }
   numTests = numTests + 1;
 

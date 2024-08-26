@@ -1,0 +1,9 @@
+deq Tully Martin CS452 Fall 2024
+
+Using my custom makefile
+
+run 'make' to run a test suite that shuffles a deq of strings
+and then a deq of integers. This is all in one valgrind session.
+
+run 'make clean' to clean working directory.
+
