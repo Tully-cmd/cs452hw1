@@ -89,41 +89,37 @@ static Data ith(Rep r, End e, int i)  {
 // Params: Rep (deq) End (Head or Tail).
 // Return Data void *
 static Data get(Rep r, End e) {
-  Data ret = 0;
-  //if(r->ht[Head] == 0 || r->ht[Tail] == 0) {
-  //  ERROR("Get on empty Deq\n");
-  //  exit(1);
-  //}
- 
-  if(r->ht[Head] == r->ht[Tail]) { //Last element
-    ret = r->ht[Head]->data;
-    free(r->ht[Tail]);
-    r->ht[Head] = 0;
-    r->ht[Tail] = 0;
-    r->len = r->len - 1;
-    return ret;
+  // Check if the deque is empty
+  if (r->len == 0) {
+    // Warn if trying to get from an empty deque
+    WARN("Get on empty Deq\n");
+    // Return 0 (null) for empty deque
+    return 0;
   }
 
-  if(e == Head) {
-    ret = r->ht[Head]->data;
-    r->ht[Head] = r->ht[Head]->np[Tail];  //Set Head to the next Node.
-    free(r->ht[Head]->np[Head]);
-    r->ht[Head]->np[Head] = 0;  //Set new Head previous Node to null.
-    r->len = r->len - 1;
-    return ret;
+  // Get the node at the specified end
+  Node node = r->ht[e];
+  // Store the data from the node to be returned
+  Data ret = node->data;
+
+  // Check if this is the last element in the deque
+  if (r->len == 1) { // Last element
+    // Set both Head and Tail to null for empty deque
+    r->ht[Head] = r->ht[Tail] = 0;
+  } else {
+    // Set the new end to the next (for Head) or previous (for Tail) node
+    r->ht[e] = node->np[!e];
+    // Set the new end's opposite pointer to null
+    r->ht[e]->np[e] = 0;
   }
-  if(e == Tail) {
-    ret = r->ht[Tail]->data;
-    r->ht[Tail] = r->ht[Tail]->np[Head]; //Set Tail to the prev Node.
-    free(r->ht[Tail]->np[Tail]);
-    r->ht[Tail]->np[Tail] = 0;  //Set new Tail next to null.
-    r->len = r->len - 1;
-    return ret;
-  }
-  //ERROR("Bad argument get(End e) Expected either Head or Tail\n");
-  //exit(1);
-  WARN("Bad argument get(End e) Expected either Head or Tail\n");
-  return 0;
+
+  // Free the memory of the removed node
+  free(node);
+  // Decrement the length of the deque
+  r->len--;
+
+  // Return the data from the removed node
+  return ret;
 }
 
 //Remove Deq Node from List. Matching the pointer of the Data.
