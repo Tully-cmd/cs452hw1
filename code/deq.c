@@ -129,29 +129,49 @@ static Data get(Rep r, End e) {
 //Remove Deq Node from List. Matching the pointer of the Data.
 static Data rem(Rep r, End e, Data d) { //Params: Rep (Deq), End (0|1), Data *
                     //Return: Data void * (static)
+  // Loop through the deque from the specified end
   for(Node cur = r->ht[e]; cur; cur = cur->np[!e]) { //Start from given end.
+    // Check if the current node's data matches the target data
     if(cur->data == d) {
+      // Store the data to be returned
       Data ret = cur->data;
 
       //Fix node next/prev pointers for the remove.
+      // Check if the node has both neighbors (i.e., it's not at an end)
       if(cur->np[Head] && cur->np[Tail]) { //Neighbors are present.
+        // Link the previous node to the next node
         cur->np[Head]->np[Tail] = cur->np[Tail];
+        // Link the next node to the previous node
         cur->np[Tail]->np[Head] = cur->np[Head];
       } else {
         // Removing head or tail
-        End removeEnd = cur->np[!e] ? e : !e;
+        End removeEnd;
+        // Check if the node has a neighbor in the opposite direction
+        if(cur->np[!e]) {
+          // If so, we're removing the current end
+          removeEnd = e;
+        } else {
+          // If not, we're removing the last node, so the other end becomes the new removeEnd
+          removeEnd = !e;
+        }
+        // Update the deq's end pointer
         r->ht[removeEnd] = cur->np[!removeEnd];
+        // If the new end exists, update its pointer
         if(r->ht[removeEnd]) {
           r->ht[removeEnd]->np[removeEnd] = 0;
         }
       }
-
+     
+      // Free the memory of the removed node
       free(cur);
+      // Decrease the length of the deque
       r->len--;
+      // Return the data from the removed node
       return ret;
     }
   }
 
+  // If the loop completes without finding the node, warn and return 0
   WARN("Could not find the Node to remove rem(%p)\n", d);
   return 0;
 }

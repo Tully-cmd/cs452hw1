@@ -1,4 +1,4 @@
-#ifndef DEQ_H
+#ifndef DEQ_H //header guard
 #define DEQ_H
 
 // put: append onto an end, len++
